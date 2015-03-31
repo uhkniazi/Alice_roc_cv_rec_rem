@@ -25,7 +25,7 @@ fGen = dfData$Gender
 fStatus = relevel(fStatus, 'Remote')
 dfData$Status = fStatus
 
-####### for ROC of 10 points of combined score and others using lda
+####### for ROC of data using LDA
 ## TAG_1 
 dfData.sub = dfData[,c(4, 5, 6, 8, 10, 7)]
 colnames(dfData.sub) = c('status', 'il2', 'ifn', 'tnf', 'time', 'dual')
@@ -46,8 +46,8 @@ library(MASS)
 library(ROCR)
 set.seed(1)
 # set these variables for outer and inner loop respectively
-iBoot.1 = 10
-iBoot.2 = 10
+iBoot.1 = 20
+iBoot.2 = 100
 
 # list variables to store results for ROC
 lPred = vector(mode = 'list', length = iBoot.1)
@@ -102,14 +102,19 @@ auc = performance(pred, 'auc')
 
 ## plot ROC, with confidence intervals
 plot(perf, main=paste('ROC of Prediction by LDA of Recent based on', colnames(dfData.sub)[2]),
-     spread.estimate='stddev', avg='vertical', spread.scale=2)
+     spread.estimate='stddev', avg='vertical', spread.scale=2, lwd=2)
 auc = paste('auc=', signif(mean(as.numeric(auc@y.values)), digits = 3))
 cv = paste('CV Error=', signif(mean(iCv.error), 3))
 legend('bottomright', legend = c(auc, cv))
 abline(0, 1, lty=2)
 
-## continue from here next time to get the actual values and cutoffs
-# the cutoff values for prediction and performance objects
-dfCutoffs = data.frame(tp=unlist(pred@tp), fp=unlist(pred@fp),  
-                cutoff=unlist(perf@alpha.values), tpr=unlist(perf@y.values), fpr=unlist(perf@x.values))
+# fit ROC on original values instead of using a model
+pred.2 = prediction(dfData.sub[,2], dfData.sub[,1] == 'Recent')
+perf.2 = performance(pred.2, 'tpr', 'fpr')
+plot(perf.2, add=T, lty=4, lwd=2)
+
+
+# the cutoff values for prediction and performance objects 
+dfCutoffs = data.frame(tp=unlist(pred.2@tp), fp=unlist(pred.2@fp),  
+                cutoff=unlist(perf.2@alpha.values), tpr=unlist(perf.2@y.values), fpr=unlist(perf.2@x.values))
 
