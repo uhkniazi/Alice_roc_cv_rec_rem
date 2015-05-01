@@ -7,7 +7,14 @@ temp.R
 
 # R data files from past sessions
 .Rdata
+*.Rproj
 
 # RStudio files
 .Rproj.user/
 .Rproj.user
+
+# Directories
+Figures/
+HTML_output/
+Hillary_RecRem/
+Report/
