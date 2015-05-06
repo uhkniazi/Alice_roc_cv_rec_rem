@@ -13,3 +13,5 @@ This is used to calculate confidence intervals for the ROC curves. The cross val
 and plotted. An additional line is added for the original values without using cross validation (as it doesn't make sense, 
 because there are no predicted values). The cutoff values are also printed in the data frame. 
 
+# roc_cv_plots_2.R
+Very similar to previous script, but for new data sets
