@@ -67,6 +67,10 @@ sig = (signif(quantile(x, probs = c(0.025, 0.975)), 2))
 print(sig)
 summary(x)
 
+# fit ROC on original values instead of using a model
+pred.2 = prediction(dfData.train, fGroups == 'Recent')
+perf.2 = performance(pred.2, 'tpr', 'fpr')
+plot(perf.2, add=T, lty=4, lwd=2)
 
 ############# second data set
 dfData = read.csv('Data_external/import_all.csv', header=T, stringsAsFactors=F)
@@ -99,6 +103,10 @@ sig = (signif(quantile(x, probs = c(0.025, 0.975)), 2))
 print(sig)
 summary(x)
 
+## plot raw data
+pred.2 = prediction(dfData.train, fGroups == 'ATB')
+perf.2 = performance(pred.2, 'tpr', 'fpr')
+plot(perf.2, add=T, lty=4, lwd=2)
 
 ########## third data set
 dfData = read.csv('Data_external/import_all.csv', header=T, stringsAsFactors=F)
@@ -130,6 +138,11 @@ x = getAUCVector(oCV)
 sig = (signif(quantile(x, probs = c(0.025, 0.975)), 2))
 print(sig)
 summary(x)
+
+## plot raw data
+pred.2 = prediction(dfData.train, fGroups == 'Recent')
+perf.2 = performance(pred.2, 'tpr', 'fpr')
+plot(perf.2, add=T, lty=4, lwd=2)
 
 
 ##############################################################################
